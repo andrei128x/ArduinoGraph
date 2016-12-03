@@ -35,7 +35,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.GL_Control = new OpenGL.GlControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.acuisitionTimer = new System.Windows.Forms.Timer(this.components);
+            this.acquisitionTimer = new System.Windows.Forms.Timer(this.components);
             this.portEnumTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -102,8 +102,8 @@
             // 
             // acuisitionTimer
             // 
-            this.acuisitionTimer.Interval = 1;
-            this.acuisitionTimer.Tick += new System.EventHandler(this.timer1_Tick);
+            this.acquisitionTimer.Interval = 1;
+            this.acquisitionTimer.Tick += new System.EventHandler(this.acquisitionTimer_Tick);
             // 
             // portEnumTimer
             // 
@@ -140,7 +140,7 @@
         private System.Windows.Forms.Button button1;
         private OpenGL.GlControl GL_Control;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.Timer acuisitionTimer;
+        private System.Windows.Forms.Timer acquisitionTimer;
         private System.Windows.Forms.Timer portEnumTimer;
     }
 }

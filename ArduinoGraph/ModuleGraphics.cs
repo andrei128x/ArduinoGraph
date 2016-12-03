@@ -9,7 +9,7 @@ namespace ArduinoGraph
 {
     class ModuleGraphics
     {
-        //
+        // method called when Gl_Control's context is created
         public static void GraphicContextCreated()
         {
             // Here you can allocate resources or initialize state
@@ -32,6 +32,21 @@ namespace ArduinoGraph
             Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             Gl.ClearColor(.17f, .13f, .25f, .5f);
+        }
+
+        // method for drawing a line segment from the DataBuffer
+        public static void LineSegment(float x1, float y1, float x2, float y2)
+        {
+            Gl.Color3(.79f, .59f, .39f);
+            Gl.Begin(PrimitiveType.LineStrip);
+            Gl.Vertex2(x1,y1);
+            Gl.Vertex2(x2,y2);
+            Gl.End();
+
+            Gl.Color3(.3f, .7f, .7f);
+            Gl.Begin(PrimitiveType.Points);
+            Gl.Vertex2(x1, y1);
+            Gl.End();
         }
     }
 }

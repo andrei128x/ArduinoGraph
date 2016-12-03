@@ -32,16 +32,7 @@ namespace ArduinoGraph
             {
                 if (buff[idx] > INVALID_DATA/2)
                 {
-                    Gl.Color3(.79f, .59f, .39f);
-                    Gl.Begin(PrimitiveType.LineStrip);
-                    Gl.Vertex2((float)(idx) / SIZE, 0.1f + buff[idx]);
-                    Gl.Vertex2(((float)(idx) + 1) / SIZE, 0.1f + buff[idx + 1]);
-                    Gl.End();
-
-                    Gl.Color3(.3f, .7f, .7f);
-                    Gl.Begin(PrimitiveType.Points);
-                    Gl.Vertex2((float)(idx) / SIZE, 0.1f + buff[idx]);
-                    Gl.End();
+                    ModuleGraphics.LineSegment((float)(idx) / SIZE, 0.1f + buff[idx], ((float)(idx) + 1) / SIZE, 0.1f + buff[idx + 1]);
                 }
             }
         }

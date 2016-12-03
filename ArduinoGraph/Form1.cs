@@ -60,10 +60,9 @@ namespace ArduinoGraph
             {
 
                 currentPortState = PortStates.PORT_OPENING;
-                acuisitionTimer.Start();
-
+                acquisitionTimer.Start();
             }
-            else
+            else if(currentPortState==PortStates.PORT_RUNNING)
             {
                 currentPortState = PortStates.PORT_CLOSING;
             }
@@ -74,11 +73,13 @@ namespace ArduinoGraph
             GL_Control.Invalidate();
         }
 
+        // Gl_Control Context created
         void glControl1_ContextCreated(object sender, OpenGL.GlControlEventArgs e)
         {
             ModuleGraphics.GraphicContextCreated();
         }
 
+        // method called when Render is requested via Invalidate
         private void Gl_Render(object sender, OpenGL.GlControlEventArgs e)
         {
             
@@ -89,22 +90,39 @@ namespace ArduinoGraph
             ModuleDataBuffer.Draw();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        // the MAIN DATA SAMPLING timer, reading data from the COM - acquisition timer
+        private void acquisitionTimer_Tick(object sender, EventArgs e)
         {
             int result = 0;
+            int totalBytes = 0;
+
+            // state    -   PORT_OPENING
+            // type     -   transitory to PORT_RUNNING
+            // performs -   opening COM connection and start of acquisition timer
+            // error    -   return to PORT_CLOSED state
             if (currentPortState == PortStates.PORT_OPENING)
             {
-                serialPort1.PortName = comboBox1.Text;
-                serialPort1.Open();
-                serialPort1.DiscardInBuffer();
-                currentPortState = PortStates.PORT_RUNNING;
-                ModuleDataBuffer.Clear();
+                try
+                {
+                    serialPort1.PortName = comboBox1.Text;
+                    serialPort1.Open();
+                    serialPort1.DiscardInBuffer();
+                    currentPortState = PortStates.PORT_RUNNING;
+                    ModuleDataBuffer.Clear();
+                }
+                catch
+                {
+                    currentPortState = PortStates.PORT_CLOSED;
+                }
             }
 
+            // state    -   PORT_RUNNING
+            // type     -   permanent state
+            // performs -   continuosly read COM port data and request redrawing of newly incoming data
             if (currentPortState == PortStates.PORT_RUNNING)
             {
                 byte[] localData = new byte[1024];
-                int totalBytes = serialPort1.BytesToRead;
+                totalBytes = serialPort1.BytesToRead;
                 int readBytes = totalBytes;
 
                 try
@@ -126,24 +144,30 @@ namespace ArduinoGraph
                     recvSize = 0;
                 }
 
-                count++;
-                // instrumentation update
-                if (count % 10 == 0)
-                {
-                    Text = comboBox1.Text + " | " + count + " |" + recvSize + " | " + totalBytes + " | " + result.ToString();
-                    
-                }
-                GL_Control.Invalidate();
-                // Redraw the whole array
+                
+                
 
             }
 
-            if(currentPortState == PortStates.PORT_CLOSING)
+            count++;
+            // instrumentation update
+            if (count % 10 == 0)
+            {
+                Text = comboBox1.Text + " | " + count + " |" + recvSize + " | " + totalBytes + " | " + result.ToString();
+
+            }
+            GL_Control.Invalidate();
+            // Redraw the whole array
+
+            // state    -   PORT_CLOSING
+            // type     -   transitory state to PORT_CLOSED
+            // performs -   closes the port and stops the acquisition timer
+            if (currentPortState == PortStates.PORT_CLOSING)
             {
                 serialPort1.DiscardInBuffer();
                 serialPort1.Close();
                 currentPortState = PortStates.PORT_CLOSED;
-                acuisitionTimer.Stop();
+                //acquisitionTimer.Stop();
             }
         }
 
