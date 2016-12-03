@@ -2,11 +2,12 @@
 using System;
 using System.ComponentModel;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
 
-namespace serialGraph
+namespace ArduinoGraph
 {
     public partial class Form1 : Form
     {
@@ -21,7 +22,9 @@ namespace serialGraph
         PortStates currentPortState = PortStates.PORT_CLOSED;
 
         int count = 0;
-        string[] portNames;
+
+        // COM ports list, initially empty, but not null
+        string[] portNames = { };
 
         int recvSize;
 
@@ -34,16 +37,6 @@ namespace serialGraph
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            portNames = SerialPort.GetPortNames();
-            serialPort1.ReadTimeout = 1;
-
-            comboBox1.Items.AddRange(portNames);
-
-            if (comboBox1.Items.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-
             DataAcquisition.Clear();
         }
 
@@ -58,7 +51,7 @@ namespace serialGraph
             {
 
                 currentPortState = PortStates.PORT_OPENING;
-                timer1.Start();
+                acuisitionTimer.Start();
 
             }
             else
@@ -162,7 +155,7 @@ namespace serialGraph
                 serialPort1.DiscardInBuffer();
                 serialPort1.Close();
                 currentPortState = PortStates.PORT_CLOSED;
-                timer1.Stop();
+                acuisitionTimer.Stop();
             }
         }
 
@@ -171,6 +164,23 @@ namespace serialGraph
             if (currentPortState == PortStates.PORT_RUNNING)
             {
                 currentPortState = PortStates.PORT_CLOSING;
+            }
+        }
+
+
+        // poll every 1second for COM port changes; if change detected, update ports list here
+        // TODO: update in place - when last selected port exists already, preserve selection after update
+        private void portEnumTimer_Tick(object sender, EventArgs e)
+        {
+            if (!SerialPort.GetPortNames().SequenceEqual(portNames))
+            {
+                portNames = SerialPort.GetPortNames();
+                comboBox1.Items.AddRange(portNames);
+
+                if (comboBox1.Items.Count > 0)
+                {
+                    comboBox1.SelectedIndex = 0;
+                }
             }
         }
     }

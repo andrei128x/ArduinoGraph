@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace serialGraph.Properties
+namespace ArduinoGraph.Properties
 {
 
 

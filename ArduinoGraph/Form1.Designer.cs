@@ -1,4 +1,4 @@
-﻿namespace serialGraph
+﻿namespace ArduinoGraph
 {
     partial class Form1
     {
@@ -35,7 +35,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.GL_Control = new OpenGL.GlControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.acuisitionTimer = new System.Windows.Forms.Timer(this.components);
+            this.portEnumTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // serialHandler
@@ -52,6 +53,7 @@
             // comboBox1
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(420, 4);
             this.comboBox1.Name = "comboBox1";
@@ -98,10 +100,16 @@
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // timer1
+            // acuisitionTimer
             // 
-            this.timer1.Interval = 1;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.acuisitionTimer.Interval = 1;
+            this.acuisitionTimer.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // portEnumTimer
+            // 
+            this.portEnumTimer.Enabled = true;
+            this.portEnumTimer.Interval = 1000;
+            this.portEnumTimer.Tick += new System.EventHandler(this.portEnumTimer_Tick);
             // 
             // Form1
             // 
@@ -132,7 +140,8 @@
         private System.Windows.Forms.Button button1;
         private OpenGL.GlControl GL_Control;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer acuisitionTimer;
+        private System.Windows.Forms.Timer portEnumTimer;
     }
 }
 
