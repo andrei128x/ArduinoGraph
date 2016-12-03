@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoGraph
 {
-    class DataAcquisition
+    class ModuleDataBuffer
     {
         const int SIZE = 1280;
         const int INVALID_DATA = -10000;
@@ -66,5 +66,8 @@ namespace ArduinoGraph
                 buff[SIZE - count + idx] = (float)data[idx]/1000;
             }
         }
+
+
+        
     }
 }

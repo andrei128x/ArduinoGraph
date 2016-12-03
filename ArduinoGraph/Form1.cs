@@ -11,6 +11,9 @@ namespace ArduinoGraph
 {
     public partial class Form1 : Form
     {
+        /* CONSTANTS */
+
+        // define a list of possible application states for the COM port connection
         enum PortStates
         {
             PORT_OPENING,
@@ -19,32 +22,38 @@ namespace ArduinoGraph
             PORT_CLOSED
         }
 
-        PortStates currentPortState = PortStates.PORT_CLOSED;
 
-        int count = 0;
+        /* relevant VARIABLES */
+
+        // default COM port connection state
+        PortStates currentPortState = PortStates.PORT_CLOSED;
 
         // COM ports list, initially empty, but not null
         string[] portNames = { };
 
+
+
+        /* other INTERNAL variables */
+        int count = 0;
         int recvSize;
 
 
+        /* METHODS */
         public Form1()
         {
             InitializeComponent();
             
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            DataAcquisition.Clear();
+            ModuleDataBuffer.Clear();
         }
-
         private void serialConnection_DoWork(object sender, DoWorkEventArgs e)
         {
             //
         }
 
+        // BUTTON CLICK -> start measuring
         private void button1_Click(object sender, EventArgs e)
         {
             if (currentPortState == PortStates.PORT_CLOSED)
@@ -60,7 +69,6 @@ namespace ArduinoGraph
             }
         }
 
-
         private void Form1_Resize(object sender, EventArgs e)
         {
             GL_Control.Invalidate();
@@ -68,26 +76,7 @@ namespace ArduinoGraph
 
         void glControl1_ContextCreated(object sender, OpenGL.GlControlEventArgs e)
         {
-            // Here you can allocate resources or initialize state
-            Gl.MatrixMode(MatrixMode.Projection);
-            Gl.LoadIdentity();
-            Gl.Ortho(0.0, 1.0f, 0.0, 1.0, 0.0, 1.0);
-
-            Gl.MatrixMode(MatrixMode.Modelview);
-            Gl.LoadIdentity();
-
-            Gl.Enable(EnableCap.Blend);
-            Gl.Enable(EnableCap.LineSmooth);
-            Gl.Enable(EnableCap.PolygonSmooth);
-            Gl.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
-            Gl.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
-
-            Gl.LineWidth(.8f);
-            Gl.PointSize(3f);
-
-            Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            Gl.ClearColor(.17f, .13f, .25f, .5f);
+            ModuleGraphics.GraphicContextCreated();
         }
 
         private void Gl_Render(object sender, OpenGL.GlControlEventArgs e)
@@ -97,7 +86,7 @@ namespace ArduinoGraph
             Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            DataAcquisition.Draw();
+            ModuleDataBuffer.Draw();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -109,7 +98,7 @@ namespace ArduinoGraph
                 serialPort1.Open();
                 serialPort1.DiscardInBuffer();
                 currentPortState = PortStates.PORT_RUNNING;
-                DataAcquisition.Clear();
+                ModuleDataBuffer.Clear();
             }
 
             if (currentPortState == PortStates.PORT_RUNNING)
@@ -127,10 +116,9 @@ namespace ArduinoGraph
 
                     recvSize = serialPort1.Read(localData, 0, readBytes); // <<bug , limit and monitor max totalbytes
 
-                    DataAcquisition.Shift(recvSize);
-                    DataAcquisition.AddData(localData, readBytes);
+                    ModuleDataBuffer.Shift(recvSize);
+                    ModuleDataBuffer.AddData(localData, readBytes);
 
-                    //count += recvSize;
                     result = totalBytes - readBytes;
                 }
                 catch (TimeoutException ex)
@@ -169,7 +157,7 @@ namespace ArduinoGraph
 
 
         // poll every 1second for COM port changes; if change detected, update ports list here
-        // TODO: update in place - when last selected port exists already, preserve selection after update
+        // TODO update in place - when last selected port exists already, preserve selection after update
         private void portEnumTimer_Tick(object sender, EventArgs e)
         {
             if (!SerialPort.GetPortNames().SequenceEqual(portNames))

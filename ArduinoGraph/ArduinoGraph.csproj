@@ -54,7 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAcquisition.cs" />
+    <Compile Include="ModuleDataBuffer.cs" />
+    <Compile Include="ModuleGraphics.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
