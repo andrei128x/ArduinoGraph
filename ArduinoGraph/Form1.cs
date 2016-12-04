@@ -46,7 +46,7 @@ namespace ArduinoGraph
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            ModuleDataBuffer.Clear();
+            ClassDataOperations.Clear();
         }
         private void serialConnection_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -76,7 +76,7 @@ namespace ArduinoGraph
         // Gl_Control Context created
         void glControl1_ContextCreated(object sender, OpenGL.GlControlEventArgs e)
         {
-            ModuleGraphics.GraphicContextCreated();
+            ClassGraphicsOperations.GraphicContextCreated();
         }
 
         // method called when Render is requested via Invalidate
@@ -87,7 +87,7 @@ namespace ArduinoGraph
             Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            ModuleDataBuffer.Draw();
+            ClassDataOperations.Draw();
         }
 
         // the MAIN DATA SAMPLING timer, reading data from the COM - acquisition timer
@@ -95,6 +95,11 @@ namespace ArduinoGraph
         {
             int result = 0;
             int totalBytes = 0;
+
+            // update status bar with current state
+            //TODO: change status no faster than 0.5 seconds
+            toolStripStatusLabel1.Text = currentPortState.ToString();
+
 
             // state    -   PORT_OPENING
             // type     -   transitory to PORT_RUNNING
@@ -108,7 +113,7 @@ namespace ArduinoGraph
                     serialPort1.Open();
                     serialPort1.DiscardInBuffer();
                     currentPortState = PortStates.PORT_RUNNING;
-                    ModuleDataBuffer.Clear();
+                    ClassDataOperations.Clear();
                 }
                 catch
                 {
@@ -134,8 +139,8 @@ namespace ArduinoGraph
 
                     recvSize = serialPort1.Read(localData, 0, readBytes); // <<bug , limit and monitor max totalbytes
 
-                    ModuleDataBuffer.Shift(recvSize);
-                    ModuleDataBuffer.AddData(localData, readBytes);
+                    ClassDataOperations.Shift(recvSize);
+                    ClassDataOperations.AddData(localData, readBytes);
 
                     result = totalBytes - readBytes;
                 }
@@ -194,6 +199,11 @@ namespace ArduinoGraph
                     comboBox1.SelectedIndex = 0;
                 }
             }
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

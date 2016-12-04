@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ArduinoGraph
 {
-    class ModuleDataBuffer
+    class ClassDataOperations
     {
-        const int SIZE = 1280;
+        const int SIZE = 4096;
         const int INVALID_DATA = -10000;
 
         public static float[] buff = new float[SIZE];
@@ -18,10 +18,12 @@ namespace ArduinoGraph
         /* clear buffer upon start of new acquisition */
         public static void Clear()
         {
-            for (int idx = 0; idx < SIZE; idx++)
-            {
-                buff[idx] = INVALID_DATA;
-            }
+            //for (int idx = 0; idx < SIZE; idx++)
+            //{
+            //    buff[idx] = INVALID_DATA;
+            //}
+
+            Array.Clear(buff, 0, buff.Length);
         }
 
 
@@ -32,7 +34,7 @@ namespace ArduinoGraph
             {
                 if (buff[idx] > INVALID_DATA/2)
                 {
-                    ModuleGraphics.LineSegment((float)(idx) / SIZE, 0.1f + buff[idx], ((float)(idx) + 1) / SIZE, 0.1f + buff[idx + 1]);
+                    ClassGraphicsOperations.LineSegment((float)(idx) / SIZE, 0.1f + buff[idx], ((float)(idx) + 1) / SIZE, 0.1f + buff[idx + 1]);
                 }
             }
         }

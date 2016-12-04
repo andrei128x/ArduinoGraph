@@ -37,6 +37,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.acquisitionTimer = new System.Windows.Forms.Timer(this.components);
             this.portEnumTimer = new System.Windows.Forms.Timer(this.components);
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialHandler
@@ -94,13 +96,15 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 389);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(634, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // acuisitionTimer
+            // acquisitionTimer
             // 
             this.acquisitionTimer.Interval = 1;
             this.acquisitionTimer.Tick += new System.EventHandler(this.acquisitionTimer_Tick);
@@ -110,6 +114,13 @@
             this.portEnumTimer.Enabled = true;
             this.portEnumTimer.Interval = 1000;
             this.portEnumTimer.Tick += new System.EventHandler(this.portEnumTimer_Tick);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // Form1
             // 
@@ -127,6 +138,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,6 +155,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Timer acquisitionTimer;
         private System.Windows.Forms.Timer portEnumTimer;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

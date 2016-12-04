@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoGraph
 {
-    class ModuleGraphics
+    class ClassGraphicsOperations
     {
         // method called when Gl_Control's context is created
         public static void GraphicContextCreated()
