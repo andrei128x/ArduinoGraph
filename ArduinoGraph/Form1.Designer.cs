@@ -35,9 +35,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.GL_Control = new OpenGL.GlControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.acquisitionTimer = new System.Windows.Forms.Timer(this.components);
-            this.portEnumTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.portEnumTimer = new System.Windows.Forms.Timer(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,17 +104,6 @@
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // acquisitionTimer
-            // 
-            this.acquisitionTimer.Interval = 1;
-            this.acquisitionTimer.Tick += new System.EventHandler(this.acquisitionTimer_Tick);
-            // 
-            // portEnumTimer
-            // 
-            this.portEnumTimer.Enabled = true;
-            this.portEnumTimer.Interval = 1000;
-            this.portEnumTimer.Tick += new System.EventHandler(this.portEnumTimer_Tick);
-            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
@@ -122,11 +111,28 @@
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
+            // portEnumTimer
+            // 
+            this.portEnumTimer.Enabled = true;
+            this.portEnumTimer.Interval = 1000;
+            this.portEnumTimer.Tick += new System.EventHandler(this.portEnumTimer_Tick);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(194, 2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 411);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.GL_Control);
             this.Controls.Add(this.button1);
@@ -153,9 +159,9 @@
         private System.Windows.Forms.Button button1;
         private OpenGL.GlControl GL_Control;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.Timer acquisitionTimer;
         private System.Windows.Forms.Timer portEnumTimer;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

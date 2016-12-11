@@ -1,9 +1,4 @@
 ﻿using OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArduinoGraph
 {
@@ -27,7 +22,7 @@ namespace ArduinoGraph
             Gl.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
 
             Gl.LineWidth(.8f);
-            Gl.PointSize(3f);
+            Gl.PointSize(2f);
 
             Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 

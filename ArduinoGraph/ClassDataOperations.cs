@@ -1,28 +1,21 @@
-﻿using OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace ArduinoGraph
 {
     class ClassDataOperations
     {
-        const int SIZE = 4096;
+        const int SIZE = 50;
         const int INVALID_DATA = -10000;
 
         public static float[] buff = new float[SIZE];
 
+        private static int bufferRead = 0;
+        private static int bufferWrite = 0;
+        private static int bufferReadLen = 0;
 
         /* clear buffer upon start of new acquisition */
         public static void Clear()
         {
-            //for (int idx = 0; idx < SIZE; idx++)
-            //{
-            //    buff[idx] = INVALID_DATA;
-            //}
-
             Array.Clear(buff, 0, buff.Length);
         }
 
@@ -30,11 +23,15 @@ namespace ArduinoGraph
         /* re-draw the buffer on the screen */
         public static void Draw()
         {
-            for (int idx = 0; idx < SIZE-1; idx += 1)
+            int readPos1, readPos2;
+            for (int idx = 0; idx < bufferReadLen; idx += 1)
             {
-                if (buff[idx] > INVALID_DATA/2)
+                readPos1 = getNextIdx(bufferRead + idx);
+                readPos2 = getNextIdx(bufferRead + idx + 1);
+
+                if (buff[readPos1] > INVALID_DATA/2)
                 {
-                    ClassGraphicsOperations.LineSegment((float)(idx) / SIZE, 0.1f + buff[idx], ((float)(idx) + 1) / SIZE, 0.1f + buff[idx + 1]);
+                    ClassGraphicsOperations.LineSegment((float)(readPos1) / SIZE, 0.1f + buff[readPos1], ((float)(readPos2) + 1) / SIZE, 0.1f + buff[readPos2 + 1]);
                 }
             }
         }
@@ -43,24 +40,42 @@ namespace ArduinoGraph
         /* shift buffer to make space for the new incoming data */
         public static void Shift(int value)
         {
-            for (int idx = 0; idx < SIZE-value; idx++)
-            {
-                buff[idx] = buff[idx + value];
-            }
+            //for (int idx = 0; idx < SIZE-value; idx++)
+            //{
+            //    buff[idx] = buff[idx + value];
+            //}
         }
 
 
         /* add the incoming data to the end (right) of the buffer */
         public static void AddData(byte[] data, int count)
         {
-            //buff[SIZE - 1] = (float)s / 1000;
+            //for (int idx = 0; idx < count; idx++)
+            //{
+            //    buff[SIZE - count + idx] = (float)data[idx]/1000;
+            //}
+            int writePos = bufferWrite;
             for (int idx = 0; idx < count; idx++)
             {
-                buff[SIZE - count + idx] = (float)data[idx]/1000;
+                writePos = getNextIdx(bufferWrite + idx);
+                buff[writePos] = (float)data[idx] / 1000;
             }
+
+            bufferReadLen = count;
+            bufferWrite = getNextIdx(bufferWrite + count);
+
+
         }
 
+        private static int getNextIdx(int idx)
+        {
+            if (idx < 0)
+            {
+                throw ( new ArgumentException("wrong index requested"));
+            }
 
+            return (idx + 1) % SIZE;
         
+        }
     }
 }

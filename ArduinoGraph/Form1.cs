@@ -1,9 +1,9 @@
 ﻿using OpenGL;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 
@@ -44,10 +44,18 @@ namespace ArduinoGraph
             InitializeComponent();
             
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             ClassDataOperations.Clear();
+            using (Process p = Process.GetCurrentProcess())
+            {
+                p.PriorityClass = ProcessPriorityClass.High;
+                toolStripStatusLabel1.Text = p.PriorityClass.ToString();
+            }
+                
         }
+
         private void serialConnection_DoWork(object sender, DoWorkEventArgs e)
         {
             //
@@ -60,7 +68,8 @@ namespace ArduinoGraph
             {
 
                 currentPortState = PortStates.PORT_OPENING;
-                acquisitionTimer.Start();
+                //acquisitionTimer.Start();
+                ClassPlayground.Test(acquisitionTimer_Tick);
             }
             else if(currentPortState==PortStates.PORT_RUNNING)
             {
@@ -148,10 +157,6 @@ namespace ArduinoGraph
                 {
                     recvSize = 0;
                 }
-
-                
-                
-
             }
 
             count++;
@@ -159,9 +164,11 @@ namespace ArduinoGraph
             if (count % 10 == 0)
             {
                 Text = comboBox1.Text + " | " + count + " |" + recvSize + " | " + totalBytes + " | " + result.ToString();
-
+                
             }
+
             GL_Control.Invalidate();
+
             // Redraw the whole array
 
             // state    -   PORT_CLOSING
@@ -203,7 +210,12 @@ namespace ArduinoGraph
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
+            
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
