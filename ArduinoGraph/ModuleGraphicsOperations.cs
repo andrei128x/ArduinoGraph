@@ -2,7 +2,7 @@
 
 namespace ArduinoGraph
 {
-    class ClassGraphicsOperations
+    class ModuleGraphicsOperations
     {
         // method called when Gl_Control's context is created
         public static void GraphicContextCreated()
@@ -21,8 +21,8 @@ namespace ArduinoGraph
             Gl.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
             Gl.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
 
-            Gl.LineWidth(.8f);
-            Gl.PointSize(2f);
+            Gl.LineWidth(.4f);
+            Gl.PointSize(1.8f);
 
             Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 

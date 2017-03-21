@@ -6,14 +6,14 @@ using System.Threading;
 
 namespace ArduinoGraph
 {
-    class ClassPlayground
+    class ModulePlayground
     {
         public static string output = "";
 
         static Stopwatch s = new Stopwatch();
         public static void Test(Action<object, EventArgs> callback)
         {
-            ClassMultimediaTimer timer = new ClassMultimediaTimer() { Interval = 10 };
+            ModuleMultimediaTimer timer = new ModuleMultimediaTimer() { Interval = 2 };
             timer.Elapsed += (o, e) => callback(o,e);
             s.Start();
             timer.Start();

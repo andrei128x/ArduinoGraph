@@ -47,7 +47,7 @@ namespace ArduinoGraph
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ClassDataOperations.Clear();
+            ModuleDataOperations.Clear();
             using (Process p = Process.GetCurrentProcess())
             {
                 p.PriorityClass = ProcessPriorityClass.High;
@@ -69,7 +69,7 @@ namespace ArduinoGraph
 
                 currentPortState = PortStates.PORT_OPENING;
                 //acquisitionTimer.Start();
-                ClassPlayground.Test(acquisitionTimer_Tick);
+                ModulePlayground.Test(acquisitionTimer_Tick);
             }
             else if(currentPortState==PortStates.PORT_RUNNING)
             {
@@ -85,7 +85,7 @@ namespace ArduinoGraph
         // Gl_Control Context created
         void glControl1_ContextCreated(object sender, OpenGL.GlControlEventArgs e)
         {
-            ClassGraphicsOperations.GraphicContextCreated();
+            ModuleGraphicsOperations.GraphicContextCreated();
         }
 
         // method called when Render is requested via Invalidate
@@ -96,7 +96,7 @@ namespace ArduinoGraph
             Gl.Viewport(0, 0, senderControl.ClientSize.Width, senderControl.ClientSize.Height);
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            ClassDataOperations.Draw();
+            ModuleDataOperations.Draw();
         }
 
         // the MAIN DATA SAMPLING timer, reading data from the COM - acquisition timer
@@ -122,7 +122,7 @@ namespace ArduinoGraph
                     serialPort1.Open();
                     serialPort1.DiscardInBuffer();
                     currentPortState = PortStates.PORT_RUNNING;
-                    ClassDataOperations.Clear();
+                    ModuleDataOperations.Clear();
                 }
                 catch
                 {
@@ -148,28 +148,17 @@ namespace ArduinoGraph
 
                     recvSize = serialPort1.Read(localData, 0, readBytes); // <<bug , limit and monitor max totalbytes
 
-                    ClassDataOperations.Shift(recvSize);
-                    ClassDataOperations.AddData(localData, readBytes);
+                    ModuleDataOperations.Shift(recvSize);
+                    ModuleDataOperations.AddData(localData, recvSize);
 
                     result = totalBytes - readBytes;
+
                 }
                 catch (TimeoutException ex)
                 {
                     recvSize = 0;
                 }
             }
-
-            count++;
-            // instrumentation update
-            if (count % 10 == 0)
-            {
-                Text = comboBox1.Text + " | " + count + " |" + recvSize + " | " + totalBytes + " | " + result.ToString();
-                
-            }
-
-            GL_Control.Invalidate();
-
-            // Redraw the whole array
 
             // state    -   PORT_CLOSING
             // type     -   transitory state to PORT_CLOSED
@@ -181,6 +170,16 @@ namespace ArduinoGraph
                 currentPortState = PortStates.PORT_CLOSED;
                 //acquisitionTimer.Stop();
             }
+
+
+            count++;
+            // instrumentation update
+            if (count % 10 == 0)
+            {
+                Text = comboBox1.Text + " | " + count + " |" + recvSize + " | " + totalBytes + " | " + result.ToString();
+            }
+            // Redraw the whole array
+            GL_Control.Invalidate();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -216,6 +215,11 @@ namespace ArduinoGraph
         private void button2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void GL_Control_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

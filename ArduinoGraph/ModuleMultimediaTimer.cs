@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoGraph
 {
-    public class ClassMultimediaTimer : IDisposable
+    public class ModuleMultimediaTimer : IDisposable
     {
         private bool disposed = false;
         private int interval, resolution;
@@ -17,14 +17,14 @@ namespace ArduinoGraph
         // Hold the timer callback to prevent garbage collection.
         private readonly MultimediaTimerCallback Callback;
 
-        public ClassMultimediaTimer()
+        public ModuleMultimediaTimer()
         {
             Callback = new MultimediaTimerCallback(TimerCallbackMethod);
             Resolution = 5;
             Interval = 5;
         }
 
-        ~ClassMultimediaTimer()
+        ~ModuleMultimediaTimer()
         {
             Dispose(false);
         }

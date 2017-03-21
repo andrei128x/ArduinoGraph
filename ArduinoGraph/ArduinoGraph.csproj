@@ -61,12 +61,12 @@
       <HintPath>..\packages\Sourceforge.Cloo.0.9.1\lib\net35\Cloo.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OpenGL.Net, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenGL.Net.0.3.2\lib\net35\OpenGL.Net.dll</HintPath>
+    <Reference Include="OpenGL.Net, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenGL.Net.0.4.0\lib\net35\OpenGL.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OpenGL.Net.WinForms, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenGL.Net.WinForms.0.3.2\lib\net35\OpenGL.Net.WinForms.dll</HintPath>
+    <Reference Include="OpenGL.Net.WinForms, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenGL.Net.WinForms.0.4.0\lib\net35\OpenGL.Net.WinForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -82,16 +82,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassPlayground.cs" />
-    <Compile Include="ClassDataOperations.cs" />
-    <Compile Include="ClassGraphicsOperations.cs" />
+    <Compile Include="ModulePlayground.cs" />
+    <Compile Include="ModuleDataOperations.cs" />
+    <Compile Include="ModuleGraphicsOperations.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClassMultimediaTimer.cs" />
+    <Compile Include="ModuleMultimediaTimer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

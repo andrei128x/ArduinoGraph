@@ -93,6 +93,7 @@
             this.GL_Control.TabStop = false;
             this.GL_Control.ContextCreated += new System.EventHandler<OpenGL.GlControlEventArgs>(this.glControl1_ContextCreated);
             this.GL_Control.Render += new System.EventHandler<OpenGL.GlControlEventArgs>(this.Gl_Render);
+            this.GL_Control.Load += new System.EventHandler(this.GL_Control_Load);
             // 
             // statusStrip1
             // 

@@ -2,9 +2,9 @@
 
 namespace ArduinoGraph
 {
-    class ClassDataOperations
+    class ModuleDataOperations
     {
-        const int SIZE = 50;
+        const int SIZE = 200;
         const int INVALID_DATA = -10000;
 
         public static float[] buff = new float[SIZE];
@@ -23,15 +23,19 @@ namespace ArduinoGraph
         /* re-draw the buffer on the screen */
         public static void Draw()
         {
-            int readPos1, readPos2;
-            for (int idx = 0; idx < bufferReadLen; idx += 1)
+            for (int idx = 0; idx < SIZE-1; idx += 1)
             {
-                readPos1 = getNextIdx(bufferRead + idx);
-                readPos2 = getNextIdx(bufferRead + idx + 1);
 
-                if (buff[readPos1] > INVALID_DATA/2)
+                int x1, x2;
+                x1 = getRingIdx(bufferRead + idx);
+                x2 = getRingIdx(bufferRead + idx + 1);
+
+                if (buff[x1] > INVALID_DATA / 2)
                 {
-                    ClassGraphicsOperations.LineSegment((float)(readPos1) / SIZE, 0.1f + buff[readPos1], ((float)(readPos2) + 1) / SIZE, 0.1f + buff[readPos2 + 1]);
+                    float valueY1 = buff[getRingIdx(bufferRead + idx)];
+                    float valueY2 = buff[getRingIdx(bufferRead + idx + 1)];
+                    ModuleGraphicsOperations.LineSegment((float)(x1) / SIZE, 0.1f + valueY1, ((float)(x2)) / SIZE, 0.1f + valueY2);
+
                 }
             }
         }
@@ -40,7 +44,7 @@ namespace ArduinoGraph
         /* shift buffer to make space for the new incoming data */
         public static void Shift(int value)
         {
-            //for (int idx = 0; idx < SIZE-value; idx++)
+            //for (int idx = 0; idx < SIZE - value; idx++)
             //{
             //    buff[idx] = buff[idx + value];
             //}
@@ -52,29 +56,29 @@ namespace ArduinoGraph
         {
             //for (int idx = 0; idx < count; idx++)
             //{
-            //    buff[SIZE - count + idx] = (float)data[idx]/1000;
+            //    buff[SIZE - count + idx] = (float)data[idx] / 1000;
             //}
+            bufferRead = bufferWrite;
             int writePos = bufferWrite;
             for (int idx = 0; idx < count; idx++)
             {
-                writePos = getNextIdx(bufferWrite + idx);
+                writePos = getRingIdx(bufferWrite + idx);
                 buff[writePos] = (float)data[idx] / 1000;
             }
 
             bufferReadLen = count;
-            bufferWrite = getNextIdx(bufferWrite + count);
-
+            bufferWrite = getRingIdx(bufferWrite + count);
 
         }
 
-        private static int getNextIdx(int idx)
+        private static int getRingIdx(int idx)
         {
             if (idx < 0)
             {
                 throw ( new ArgumentException("wrong index requested"));
             }
 
-            return (idx + 1) % SIZE;
+            return (idx) % SIZE;
         
         }
     }
